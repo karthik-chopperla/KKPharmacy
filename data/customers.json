@@ -1,0 +1,14 @@
+[
+    {
+        "name": "KKpatient",
+        "email": "moviesfor4uuguys@gmail.com",
+        "phone": "9090900909",
+        "password": "$2y$10$CVGWP6hCiRxiIi8HuQQWJ.K6uZduL29liS4ossbXGgvf2rzMS0.Ki",
+        "active": 1,
+        "verified": 1,
+        "verify_token": "",
+        "created_at": "2026-10-25 11:20:43",
+        "id": 1,
+        "last_login": "2026-10-25 11:21:00"
+    }
+]

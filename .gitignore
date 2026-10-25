@@ -1,0 +1,5 @@
+data/.alert_sent_*
+data/*.tmp
+*.log
+.DS_Store
+Thumbs.db

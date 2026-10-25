@@ -1,0 +1,20 @@
+[
+    {
+        "sale_id": 1,
+        "medicine_id": 1,
+        "batch_id": 1,
+        "quantity": 1,
+        "mrp": 200,
+        "price": 200,
+        "id": 1
+    },
+    {
+        "sale_id": 2,
+        "medicine_id": 1,
+        "batch_id": 1,
+        "quantity": 1,
+        "mrp": 200,
+        "price": 200,
+        "id": 2
+    }
+]

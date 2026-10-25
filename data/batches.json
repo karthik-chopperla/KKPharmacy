@@ -1,0 +1,15 @@
+[
+    {
+        "batch_no": "1",
+        "expiry_date": "2027-05-30",
+        "mfg_date": "2026-10-25",
+        "quantity": 0,
+        "purchase_price": 56,
+        "mrp": 200,
+        "supplier_id": null,
+        "updated_at": "2026-10-25 11:22:25",
+        "medicine_id": 1,
+        "created_at": "2026-10-25 10:50:10",
+        "id": 1
+    }
+]

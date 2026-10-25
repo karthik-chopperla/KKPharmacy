@@ -1,0 +1,13 @@
+[
+    {
+        "supplier_id": 1,
+        "po_date": "2026-10-25",
+        "status": "shipped",
+        "total": 448,
+        "notes": "",
+        "created_at": "2026-10-25 11:11:19",
+        "id": 1,
+        "updated_at": "2026-10-25 11:12:19",
+        "shipped_at": "2026-10-25 11:12:19"
+    }
+]
