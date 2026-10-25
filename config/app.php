@@ -13,11 +13,14 @@ if (getenv('VERCEL') || isset($_ENV['VERCEL'])) {
     if (!defined('DATA_DIR')) define('DATA_DIR', '/tmp/data');
     if (!is_dir(DATA_DIR)) {
         @mkdir(DATA_DIR, 0777, true);
-        $src = ROOT . '/data';
-        if (is_dir($src)) {
-            foreach (scandir($src) as $f) {
-                if ($f !== '.' && $f !== '..') {
-                    @copy("{$src}/{$f}", DATA_DIR . "/{$f}");
+    }
+    $src = ROOT . '/data';
+    if (is_dir($src)) {
+        foreach (scandir($src) as $f) {
+            if ($f !== '.' && $f !== '..') {
+                $dst = DATA_DIR . "/{$f}";
+                if (!file_exists($dst) || filemtime("{$src}/{$f}") > filemtime($dst)) {
+                    @copy("{$src}/{$f}", $dst);
                 }
             }
         }
