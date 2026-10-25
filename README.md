@@ -3,6 +3,25 @@
 
 ---
 
+## 🌐 Live Demo & Portals
+
+### 🔑 Admin Portal
+- **URL**: [https://kkpharmacy-xi.vercel.app/index.php?p=login](https://kkpharmacy-xi.vercel.app/index.php?p=login)
+- **Username**: `KKPharma`
+- **Password**: `Admin@123`
+
+### 📦 Supplier Portal
+- **URL**: [https://kkpharmacy-xi.vercel.app/index.php?p=sup_login](https://kkpharmacy-xi.vercel.app/index.php?p=sup_login)
+- **Username**: `KKSupplier`
+- **Password**: `Supplier`
+
+### 🏥 Patient / Customer Portal
+- **URL**: [https://kkpharmacy-xi.vercel.app/index.php?p=cust_login](https://kkpharmacy-xi.vercel.app/index.php?p=cust_login)
+- **Email**: `moviesfor4uuguys@gmail.com`
+- **Password**: `Patient@123`
+
+---
+
 ## 🚀 Quick Start (Termux / XAMPP / Any PHP Server)
 
 1. Extract `drxstore/` to your web root
