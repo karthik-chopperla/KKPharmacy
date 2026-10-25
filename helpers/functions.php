@@ -149,7 +149,8 @@ function startSession(): void {
     if (session_status() === PHP_SESSION_NONE) {
         // Only modify session path/params before headers are sent
         if (!headers_sent()) {
-            $isHttps = !empty($_SERVER['HTTPS']) && strtolower((string)$_SERVER['HTTPS']) !== 'off';
+            $isHttps = (!empty($_SERVER['HTTPS']) && strtolower((string)$_SERVER['HTTPS']) !== 'off')
+                    || (strtolower($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https');
             $sp = session_save_path();
             if (empty($sp) || !is_writable($sp)) {
                 $t = sys_get_temp_dir();

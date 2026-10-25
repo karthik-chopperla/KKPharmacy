@@ -124,9 +124,12 @@ function adminHeader(string $title, string $activePage = ''): void {
     echo '<link rel="icon" href="data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><rect width=\'100\' height=\'100\' rx=\'20\' fill=\'%230a2342\'/><text y=\'.88em\' x=\'.1em\' font-size=\'75\' fill=\'white\'>Rx</text></svg>">' . "\n";
     echo '</head><body><div class="app-layout"><div class="mob-overlay" id="mobOverlay"></div>' . "\n";
 
+    $GLOBALS['_admin_active_page'] = $activePage;
+    $GLOBALS['_admin_n_act_total']  = $nActTotal;
+
     // Sidebar
     echo '<nav class="sidebar" id="sidebar">' . "\n";
-    echo '<div class="sb-head"><div class="sb-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></div><div><div class="sb-title">' . $storeE . '</div><div class="sb-portal">Admin Portal</div></div></div>' . "\n";
+    echo '<div class="sb-head"><div class="sb-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></div><div style="flex:1;min-width:0"><div class="sb-title">' . $storeE . '</div><div class="sb-portal">Admin Portal</div></div><button class="sb-close-btn" id="sbCloseBtn" aria-label="Close menu" onclick="closeSidebar()" ontouchend="event.preventDefault();closeSidebar()">&times;</button></div>' . "\n";
 
     echo '<div class="sb-section">Overview</div><ul class="sb-nav">';
     echo _navItem('dashboard','Dashboard','grid',$activePage);
@@ -179,7 +182,35 @@ function adminHeader(string $title, string $activePage = ''): void {
 }
 
 function adminFooter(): void {
+    $activePage = $GLOBALS['_admin_active_page'] ?? '';
+    $nActTotal  = (int)($GLOBALS['_admin_n_act_total'] ?? 0);
+    $dot = $nActTotal > 0 ? '<span class="mob-nav-dot"></span>' : '';
+
     echo '</div></div></div>';
+
+    // Mobile Bottom Navigation Dock
+    echo '<nav class="mob-bottom-nav no-print" aria-label="Mobile quick navigation">';
+    echo '<a href="index.php?p=dashboard" class="mob-nav-item' . ($activePage==='dashboard'?' active':'') . '">';
+    echo '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>';
+    echo '<span>Dashboard</span></a>';
+
+    echo '<a href="index.php?p=medicines" class="mob-nav-item' . ($activePage==='medicines'?' active':'') . '">';
+    echo '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 3.5a5 5 0 0 1 7.07 7.07l-7.5 7.5a5 5 0 0 1-7.07-7.07l7.5-7.5z"/><line x1="8.5" y1="12" x2="15.5" y2="5"/></svg>';
+    echo '<span>Medicines</span></a>';
+
+    echo '<a href="index.php?p=sales" class="mob-nav-item mob-nav-sale' . ($activePage==='sales'?' active':'') . '">';
+    echo '<div class="mob-sale-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>';
+    echo '<span>New Sale</span></a>';
+
+    echo '<a href="index.php?p=purchase" class="mob-nav-item' . ($activePage==='purchase'?' active':'') . '">';
+    echo '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>';
+    echo '<span>Orders</span></a>';
+
+    echo '<button type="button" class="mob-nav-item" onclick="openSidebar()" ontouchend="event.preventDefault();openSidebar()">';
+    echo '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>';
+    echo '<span>Menu</span>' . $dot . '</button>';
+    echo '</nav>' . "\n";
+
     echo '<script src="' . assetUrl('assets/js/app.js') . '"></script>';
     echo attrComment();
     echo '</body></html>' . "\n";

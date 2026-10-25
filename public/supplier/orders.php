@@ -20,6 +20,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $pid    = postInt('po_id');
     $status = post('status');
     $po     = $db->findOne('purchase_orders', fn($p) => $p['id'] === $pid && ($p['supplier_id'] ?? 0) === $supId);
+    if (!$po) {
+        setFlash('danger', 'Order not found or unauthorized.');
+        header('Location: index.php?p=sup_orders'); exit;
+    }
     $current = $po['status'] ?? 'pending';
 
     // Handle save prices — sets status to price_updated (admin must confirm)

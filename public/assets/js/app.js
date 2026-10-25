@@ -117,18 +117,30 @@ function closeSidebar() {
 document.addEventListener('DOMContentLoaded', function () {
 
     /* Sidebar toggle - bind events in DOMContentLoaded */
-    var _sb  = document.getElementById('sidebar');
-    var _ov  = document.getElementById('mobOverlay');
-    var _btn = document.getElementById('menuBtn');
+    var _sb   = document.getElementById('sidebar');
+    var _ov   = document.getElementById('mobOverlay');
+    var _btn  = document.getElementById('menuBtn');
+    var _cbtn = document.getElementById('sbCloseBtn');
 
     if (_btn) {
         _btn.addEventListener('click', openSidebar);
         _btn.addEventListener('touchend', function (e) { e.preventDefault(); openSidebar(); });
     }
+    if (_cbtn) {
+        _cbtn.addEventListener('click', closeSidebar);
+        _cbtn.addEventListener('touchend', function (e) { e.preventDefault(); closeSidebar(); });
+    }
     if (_ov) {
         _ov.addEventListener('click', closeSidebar);
         _ov.addEventListener('touchend', function (e) { e.preventDefault(); closeSidebar(); });
     }
+
+    /* Auto-close sidebar on mobile when a nav link is clicked */
+    document.querySelectorAll('.sb-nav a').forEach(function(a) {
+        a.addEventListener('click', function() {
+            if (window.innerWidth <= 1024) closeSidebar();
+        });
+    });
 
     /* Alert auto-dismiss */
     document.querySelectorAll('.alert').forEach(function (el) {

@@ -55,6 +55,13 @@ ini_set('display_errors', 0);   // Never expose raw errors to browser
 error_reporting(E_ALL);
 date_default_timezone_set('Asia/Kolkata');
 
+// ── Security Headers ──────────────────────────────────────────────────────
+if (!headers_sent()) {
+    header("X-Frame-Options: SAMEORIGIN");
+    header("X-Content-Type-Options: nosniff");
+    header("Referrer-Policy: strict-origin-when-cross-origin");
+}
+
 require_once ROOT . '/helpers/JsonDB.php';
 require_once ROOT . '/helpers/MySQLDB.php';
 require_once ROOT . '/helpers/functions.php';

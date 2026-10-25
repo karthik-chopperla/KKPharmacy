@@ -401,6 +401,9 @@ function buildReceiveForm(poId) {
         container.innerHTML = '<p class="text-sm text-muted">No items found. Please refresh and try again.</p>';
         return;
     }
+    function escHtml(s) {
+        return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+    }
     var html = '';
     poItems.forEach(function(poi){
         var med = _medMapData[poi.medicine_id] || {};
@@ -408,7 +411,7 @@ function buildReceiveForm(poId) {
         var mrpVal = parseFloat(poi.mrp||poi.price||0).toFixed(2);
         html +=
             '<div style="border:1px solid var(--g3);border-radius:var(--rl);padding:14px;margin-bottom:12px;background:var(--g1)">' +
-            '<div class="fw-600" style="margin-bottom:10px;color:var(--navy)">'+(med.name||'Medicine')+' <span style="color:var(--g5);font-size:.75rem;font-weight:400">— PO Qty: '+parseInt(poi.quantity||0)+'</span></div>' +
+            '<div class="fw-600" style="margin-bottom:10px;color:var(--navy)">'+escHtml(med.name||'Medicine')+' <span style="color:var(--g5);font-size:.75rem;font-weight:400">— PO Qty: '+parseInt(poi.quantity||0)+'</span></div>' +
             '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">' +
             '<div class="form-group" style="margin:0"><label class="form-label text-xs">Batch Number <span class="req">*</span></label><input class="form-control" type="text" name="batch['+poi.id+'][batch_no]" placeholder="e.g. BA2026001" required></div>' +
             '<div class="form-group" style="margin:0"><label class="form-label text-xs">Qty Received <span class="req">*</span></label><input class="form-control" type="number" name="batch['+poi.id+'][qty]" value="'+parseInt(poi.quantity||0)+'" min="1" required></div>' +
