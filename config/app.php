@@ -9,8 +9,22 @@ if (!defined('APP_VERSION')) define('APP_VERSION', '2.0.0');
 if (!defined('APP_AUTHOR'))  define('APP_AUTHOR',  'Karthik');
 if (!defined('ADMIN_EMAIL')) define('ADMIN_EMAIL', 'psvineet@zohomail.in');
 
-if (!defined('ROOT'))     define('ROOT',     dirname(__DIR__));
-if (!defined('DATA_DIR')) define('DATA_DIR', ROOT . '/data');
+if (getenv('VERCEL') || isset($_ENV['VERCEL'])) {
+    if (!defined('DATA_DIR')) define('DATA_DIR', '/tmp/data');
+    if (!is_dir(DATA_DIR)) {
+        @mkdir(DATA_DIR, 0777, true);
+        $src = ROOT . '/data';
+        if (is_dir($src)) {
+            foreach (scandir($src) as $f) {
+                if ($f !== '.' && $f !== '..') {
+                    @copy("{$src}/{$f}", DATA_DIR . "/{$f}");
+                }
+            }
+        }
+    }
+} else {
+    if (!defined('DATA_DIR')) define('DATA_DIR', ROOT . '/data');
+}
 
 if (!defined('GST_RATE'))      define('GST_RATE',      0.18);
 if (!defined('LOW_QTY'))       define('LOW_QTY',       10);
