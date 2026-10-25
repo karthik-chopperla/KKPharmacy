@@ -6,8 +6,11 @@
   },
   "routes": [
     {
+      "handle": "filesystem"
+    },
+    {
       "src": "/assets/(.*)",
-      "dest": "/assets/$1"
+      "dest": "/api/index.php"
     },
     {
       "src": "/(.*)",

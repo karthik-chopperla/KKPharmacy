@@ -11,6 +11,31 @@ ob_start();
 // Define ROOT once here - config/app.php guards against re-definition
 if (!defined('ROOT')) define('ROOT', __DIR__);
 
+// Serve static assets if routed through PHP on Vercel/serverless
+$reqUri = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH);
+if ($reqUri && preg_match('#/assets/(css|js|img|fonts)/(.+)$#', $reqUri, $m)) {
+    $assetPath = ROOT . '/assets/' . $m[1] . '/' . $m[2];
+    if (file_exists($assetPath)) {
+        if (ob_get_level()) ob_end_clean();
+        $ext = strtolower(pathinfo($assetPath, PATHINFO_EXTENSION));
+        $mimes = [
+            'css'   => 'text/css; charset=UTF-8',
+            'js'    => 'application/javascript; charset=UTF-8',
+            'svg'   => 'image/svg+xml',
+            'png'   => 'image/png',
+            'jpg'   => 'image/jpeg',
+            'jpeg'  => 'image/jpeg',
+            'woff'  => 'font/woff',
+            'woff2' => 'font/woff2',
+            'ttf'   => 'font/ttf',
+        ];
+        header('Content-Type: ' . ($mimes[$ext] ?? 'text/plain'));
+        header('Cache-Control: public, max-age=31536000');
+        readfile($assetPath);
+        exit;
+    }
+}
+
 require_once ROOT . '/config/app.php';
 
 // Start session BEFORE any output or redirect
