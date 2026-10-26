@@ -12,16 +12,16 @@ $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $ctx = 'customer';
     clearAttempts($ctx);
-    $email = post('email'); $pw = post('password');
-    if (!$email || !$pw) {
-        $error = 'Please enter your email and password.';
+    $phone = post('phone'); $pw = post('password');
+    if (!$phone || !$pw) {
+        $error = 'Please enter your phone number and password.';
     } else {
         $cust = $db->findOne('customers', fn($c) =>
-            strtolower($c['email'] ?? '') === strtolower($email) &&
+            ($c['phone'] ?? '') === $phone &&
             ($c['active'] ?? true) &&
             !empty($c['password'])
         );
-        $isValidPw = $cust && (password_verify($pw, $cust['password']) || in_array($pw, ['Patient@123', 'patient@123']));
+        $isValidPw = $cust && password_verify($pw, $cust['password']);
         if ($isValidPw) {
             clearAttempts($ctx);
             session_regenerate_id(true);
@@ -29,14 +29,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['customer_name']= $cust['name'];
             $_SESSION['cust_verified']= true;
             $db->update('customers', fn($c) => $c['id'] === $cust['id'], [
-                'password'   => password_hash($pw, PASSWORD_BCRYPT),
                 'last_login' => date('Y-m-d H:i:s')
             ]);
             setFlash('success', 'Welcome, ' . $cust['name'] . '!');
             header('Location: index.php?p=cust_dash'); exit;
         } else {
             recordAttempt($ctx);
-            $error = 'Invalid email or password.';
+            $error = 'Invalid phone number or password.';
         }
     }
 }
@@ -64,26 +63,26 @@ $cfg = getSettings();
     </div>
   </div>
   <h2 class="auth-h2">Patient Sign In</h2>
-  <p class="auth-sub">Access your purchase history and orders.</p>
+  <p class="auth-sub">Enter your phone number and password to continue.</p>
 
   <?php if ($error): ?>
   <div class="alert alert-danger"><span class="alert-body"><?=e($error)?></span></div>
   <?php endif; ?>
 
   <form method="POST" novalidate><?=csrfField()?>
-    <div class="form-group"><label class="form-label">Email Address</label>
-      <input class="form-control" type="email" name="email" value="<?=e(post('email'))?>" required autofocus>
+    <div class="form-group"><label class="form-label">Phone Number</label>
+      <input class="form-control" type="tel" name="phone" value="<?=e(post('phone'))?>" required autofocus placeholder="Enter your phone number">
     </div>
-    <div class="form-group" style="margin-bottom:18px"><label class="form-label">Password</label>
+    <div class="form-group" style="margin-bottom:18px"><label class="form-label">Password <span style="color:var(--g5);font-size:.78rem;font-weight:400">(default: your phone number)</span></label>
       <input class="form-control" type="password" name="password" required>
     </div>
     <button type="submit" class="btn btn-block btn-lg" style="background:#581c87;color:#fff;border:none;border-radius:var(--r);padding:10px;font-size:.9rem;font-weight:600;cursor:pointer">Sign In</button>
   </form>
 
   <div class="auth-divider" style="margin-top:16px">new patient?</div>
-  <a href="index.php?p=cust_reg" class="btn btn-ghost btn-block">Create Account</a>
-  <p style="text-align:center;margin-top:12px;font-size:.78rem;color:var(--g5)">
-    Forgot password? Contact your pharmacy administrator.
+  <p style="text-align:center;margin-top:8px;font-size:.8rem;color:var(--g5)">Contact your pharmacy to register.</p>
+  <p style="text-align:center;margin-top:4px;font-size:.78rem;color:var(--g5)">
+    Forgot password? Ask pharmacy staff to reset it.
   </p>
 
   <div class="auth-divider" style="margin-top:10px">other portals</div>
